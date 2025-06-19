@@ -1,10 +1,10 @@
-﻿using Application.DTOs;
+﻿using Application.DTOs.ApplicationRequestDTOs;
 using Application.Queries;
 using Domain.Interfaces;
 using MediatR;
 using System.Collections.Generic;
 
-namespace Application.Handlers
+namespace Application.Handlers.ApplicationRequestHandlers
 {
     public class GetAllApplicationRequestsHandler : IRequestHandler<GetAllApplicationRequestsQuery, List<ApplicationRequestDto>>
     {

@@ -1,24 +1,21 @@
-﻿using Application.Commands;
-using Application.DTOs;
+﻿using Application.Commands.ApplicationRequestCommands;
+using Application.DTOs.ApplicationRequestDTOs;
 using Application.Queries;
-using Domain.Interfaces;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [Route("api/[controller]")]
     [ApiController]
-    public class ApplicationRequestsController : ControllerBase
+
+    public class ApplicationRequestsController(IMediator mediator) : ControllerBase
     {
-        private readonly IMediator _mediator;
+        private readonly IMediator _mediator = mediator;
 
-        public ApplicationRequestsController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
-
-        [HttpPost]
+        [HttpPost("create")]
         public async Task<IActionResult> Create(CreateApplicationRequestCommand command)
         {
             var id = await _mediator.Send(command);

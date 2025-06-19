@@ -1,9 +1,9 @@
-﻿using Application.Commands;
+﻿using Application.Commands.ApplicationRequestCommands;
 using Domain.Entities;
 using Domain.Interfaces;
 using MediatR;
 
-namespace Application.Handlers
+namespace Application.Handlers.ApplicationRequestHandlers
 {
     public class CreateApplicationRequestHandler : IRequestHandler<CreateApplicationRequestCommand, int>
     {
