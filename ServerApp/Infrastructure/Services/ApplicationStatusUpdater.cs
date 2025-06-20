@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Application.DTOs.ApplicationRequestDTOs;
+using Domain.Entities;
 using Infrastructure.Hubs;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
@@ -33,9 +34,18 @@ namespace Infrastructure.Services
                 {
                     List<ApplicationRequest> updatedRequests = await dbContext.ApplicationRequests
                         .Where(x => x.Status == "completed" && x.Date <= now)
+                        .Include(x => x.Type)
                         .ToListAsync(cancellationToken: stoppingToken);
 
-                    await _hubContext.Clients.All.SendAsync("ApplicationRequestsUpdated", updatedRequests, stoppingToken);
+                    List<ApplicationRequestDto> response = updatedRequests.Select(x => new ApplicationRequestDto
+                    {
+                        Id = x.Id,
+                        Date = x.Date,
+                        Type = x.Type?.Name ?? string.Empty,
+                        Status = x.Status
+                    }).ToList();
+
+                    await _hubContext.Clients.All.SendAsync("ApplicationRequestsUpdated", response, stoppingToken);
 
                 }
 
