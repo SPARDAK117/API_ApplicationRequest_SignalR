@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Persistence;
+using System.Threading;
 
 namespace Infrastructure.Services
 {
@@ -36,10 +37,15 @@ namespace Infrastructure.Services
 
                 if (updatedCount > 0)
                 {
-                    await _hubContext.Clients.All.SendAsync("ApplicationRequestsUpdated", cancellationToken: stoppingToken);
+                    var updatedRequests = await dbContext.ApplicationRequests
+                        .Where(x => x.Status == "completed" && x.Date <= now)
+                        .ToListAsync(cancellationToken: stoppingToken);
+
+                    await _hubContext.Clients.All.SendAsync("ApplicationRequestsUpdated", updatedRequests, stoppingToken);
+
                 }
 
-                await Task.Delay(TimeSpan.FromSeconds(30), stoppingToken);
+                await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);
             }
         }
 

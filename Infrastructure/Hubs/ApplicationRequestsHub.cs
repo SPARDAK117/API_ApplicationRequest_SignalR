@@ -7,7 +7,7 @@ namespace Infrastructure.Hubs
     {
         public async Task SendMessage(string message)
         {
-            await Clients.All.SendAsync("ReceiveMessage", message);
+            await Clients.All.SendAsync("StatusUpdated", message);
         }
     }
 }

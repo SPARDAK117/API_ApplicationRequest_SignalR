@@ -117,12 +117,15 @@ using (var scope = app.Services.CreateScope())
     await db.Database.MigrateAsync();
 }
 
-app.MapHub<ApplicationRequestsHub>("/applicationRequestsHub");
 app.UseHttpsRedirection();
 app.UseCors(MyAllowSpecificOrigins);
+app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHub<ApplicationRequestsHub>("/applicationRequestsHub");
+
+
 
 await app.RunAsync();

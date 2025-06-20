@@ -7,11 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
 {
-    [Authorize(Roles = "Admin")]
+
     [Route("api/[controller]")]
     [ApiController]
 
-    public class ApplicationRequestsController(IMediator mediator) : ControllerBase
+    public class ApplicationController(IMediator mediator) : ControllerBase
     {
         private readonly IMediator _mediator = mediator;
 
@@ -22,11 +22,26 @@ namespace Api.Controllers
             return Ok(new { id });
         }
 
-        [HttpGet]
+        [HttpGet("getApplicationDashboard")]
         public async Task<ActionResult<List<ApplicationRequestDto>>> GetAll()
         {
             var result = await _mediator.Send(new GetAllApplicationRequestsQuery());
             return Ok(result);
         }
+
+        [Authorize(Roles = "Admin")]
+        [HttpDelete("deleteApplicationBatch")]
+        public async Task<IActionResult> Delete([FromBody] int[] ids)
+        {
+            var result = await _mediator.Send(new DeleteApplicationBatchCommand { Ids = ids });
+
+            if (result)
+            {
+                return NoContent();
+            }
+
+            return NotFound("Some or all application requests not found.");
+        }
+
     }
 }
