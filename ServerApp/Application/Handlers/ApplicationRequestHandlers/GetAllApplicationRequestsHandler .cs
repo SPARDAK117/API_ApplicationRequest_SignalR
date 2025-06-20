@@ -1,5 +1,6 @@
 ﻿using Application.DTOs.ApplicationRequestDTOs;
 using Application.Queries;
+using Domain.Entities;
 using Domain.Interfaces;
 using MediatR;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ namespace Application.Handlers.ApplicationRequestHandlers
 
         public async Task<List<ApplicationRequestDto>> Handle(GetAllApplicationRequestsQuery request, CancellationToken cancellationToken)
         {
-            var results = await _repository.GetAllWithTypeAsync();
+            List<ApplicationRequest> results = await _repository.GetAllWithTypeAsync();
 
             return results.Select(r => new ApplicationRequestDto
             {

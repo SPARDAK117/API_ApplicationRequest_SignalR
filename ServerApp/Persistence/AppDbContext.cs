@@ -7,7 +7,7 @@ namespace Persistence
     {
         public DbSet<LoginCredential> LoginCredentials { get; set; }
         public DbSet<Role> Roles { get; set; }
-        public DbSet<ApplicationRequest> ApplicationRequests { get; set; }
+        public virtual DbSet<ApplicationRequest> ApplicationRequests { get; set; }
         public DbSet<RequestType> RequestTypes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

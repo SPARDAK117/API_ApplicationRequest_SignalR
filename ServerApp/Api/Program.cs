@@ -1,4 +1,5 @@
-﻿using Application.Handlers.ApplicationRequestHandlers;
+﻿using Api.Middlewares;
+using Application.Handlers.ApplicationRequestHandlers;
 using Domain.Interfaces;
 using Infrastructure.Hubs;
 using Infrastructure.Services;
@@ -8,6 +9,7 @@ using Microsoft.OpenApi.Models;
 using Persistence;
 using Persistence.Repositories;
 using System.Text;
+
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -120,6 +122,7 @@ using (var scope = app.Services.CreateScope())
 app.UseHttpsRedirection();
 app.UseCors(MyAllowSpecificOrigins);
 app.UseRouting();
+app.UseMiddleware<ErrorHandlingMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
 

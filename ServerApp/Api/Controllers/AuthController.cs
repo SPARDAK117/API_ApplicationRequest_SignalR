@@ -12,12 +12,12 @@ namespace Api.Controllers
         private readonly IMediator _mediator = mediator;
 
         /// <summary>
-        /// Autentica a un usuario y genera un token JWT.
+        /// Authenticates a user and generates a JWT token.
         /// </summary>
-        /// <param name="request">Credenciales del usuario (username/email y contraseña)</param>
-        /// <returns>Token JWT y datos del usuario autenticado</returns>
-        /// <response code="200">Retorna el token si las credenciales son válidas</response>
-        /// <response code="401">Credenciales inválidas</response>
+        /// <param name="request">User credentials (username/email and password)</param>
+        /// <returns>JWT token and authenticated user information</returns>
+        /// <response code="200">Returns the token if credentials are valid</response>
+        /// <response code="401">Invalid credentials</response>
         [HttpPost("login")]
         [ProducesResponseType(typeof(AuthResultDto), 200)]
         [ProducesResponseType(401)]
@@ -39,14 +39,13 @@ namespace Api.Controllers
             }
         }
 
-
         /// <summary>
-        /// Registra un nuevo usuario con rol asociado.
+        /// Registers a new user and assigns a role.
         /// </summary>
-        /// <param name="command">Datos del nuevo usuario</param>
-        /// <returns>ID del usuario registrado</returns>
-        /// <response code="200">Usuario creado correctamente</response>
-        /// <response code="400">Datos inválidos o error en el registro</response>
+        /// <param name="command">Registration data including username, email, password and role ID</param>
+        /// <returns>ID of the newly registered user</returns>
+        /// <response code="200">User created successfully</response>
+        /// <response code="400">Invalid input or registration error</response>
         [HttpPost("register")]
         [ProducesResponseType(typeof(object), 200)]
         [ProducesResponseType(400)]
@@ -54,7 +53,10 @@ namespace Api.Controllers
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(command.Username) || string.IsNullOrWhiteSpace(command.Email) || string.IsNullOrWhiteSpace(command.Password) || command.RoleId <= 0)
+                if (string.IsNullOrWhiteSpace(command.Username) ||
+                    string.IsNullOrWhiteSpace(command.Email) ||
+                    string.IsNullOrWhiteSpace(command.Password) ||
+                    command.RoleId <= 0)
                 {
                     return BadRequest("Invalid input data");
                 }
@@ -68,5 +70,4 @@ namespace Api.Controllers
             }
         }
     }
-
 }

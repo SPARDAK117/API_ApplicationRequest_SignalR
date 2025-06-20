@@ -1,30 +1,24 @@
-﻿using Infrastructure.Hubs;
+﻿using Domain.Entities;
+using Infrastructure.Hubs;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Persistence;
-using System.Threading;
 
 namespace Infrastructure.Services
 {
-    public class ApplicationStatusUpdater : BackgroundService
+    public class ApplicationStatusUpdater(IServiceProvider serviceProvider, IHubContext<ApplicationRequestsHub> hubContext) : BackgroundService
     {
-        private readonly IServiceProvider _serviceProvider;
-        private readonly IHubContext<ApplicationRequestsHub> _hubContext;
-
-        public ApplicationStatusUpdater(IServiceProvider serviceProvider, IHubContext<ApplicationRequestsHub> hubContext)
-        {
-            _serviceProvider = serviceProvider;
-            _hubContext = hubContext;
-        }
+        private readonly IServiceProvider _serviceProvider = serviceProvider;
+        private readonly IHubContext<ApplicationRequestsHub> _hubContext = hubContext;
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             while (!stoppingToken.IsCancellationRequested)
             {
                 using IServiceScope scope = _serviceProvider.CreateScope();
-                var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+                AppDbContext dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
                 DateTime now = DateTime.UtcNow;
                 DateTime expirationThreshold = now.AddMinutes(-1);
@@ -37,7 +31,7 @@ namespace Infrastructure.Services
 
                 if (updatedCount > 0)
                 {
-                    var updatedRequests = await dbContext.ApplicationRequests
+                    List<ApplicationRequest> updatedRequests = await dbContext.ApplicationRequests
                         .Where(x => x.Status == "completed" && x.Date <= now)
                         .ToListAsync(cancellationToken: stoppingToken);
 

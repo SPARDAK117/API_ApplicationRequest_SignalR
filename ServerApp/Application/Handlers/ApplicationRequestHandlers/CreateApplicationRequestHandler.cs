@@ -5,18 +5,18 @@ using MediatR;
 
 namespace Application.Handlers.ApplicationRequestHandlers
 {
-    public class CreateApplicationRequestHandler : IRequestHandler<CreateApplicationRequestCommand, int>
+    public class CreateApplicationRequestHandler(IApplicationRequestRepository repository) : IRequestHandler<CreateApplicationRequestCommand, int>
     {
-        private readonly IApplicationRequestRepository _repository;
-
-        public CreateApplicationRequestHandler(IApplicationRequestRepository repository)
-        {
-            _repository = repository;
-        }
+        private readonly IApplicationRequestRepository _repository = repository;
 
         public async Task<int> Handle(CreateApplicationRequestCommand request, CancellationToken cancellationToken)
         {
-            var entity = new ApplicationRequest
+            if (string.IsNullOrWhiteSpace(request.Message))
+                throw new ArgumentException("Message cannot be empty");
+            if (request.TypeId <= 0)
+                throw new ArgumentException("Invalid TypeId");
+
+            ApplicationRequest entity = new()
             {
                 TypeId = request.TypeId,
                 Message = request.Message,
