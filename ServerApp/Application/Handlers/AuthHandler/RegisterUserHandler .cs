@@ -6,7 +6,7 @@ using Persistence;
 
 namespace Application.Handlers.AuthHandler
 {
-    public class RegisterUserCommandHandler(AppDbContext context) : IRequestHandler<RegisterUserCommand, int>
+    public class RegisterUserHandler(AppDbContext context) : IRequestHandler<RegisterUserCommand, int>
     {
         private readonly AppDbContext _context = context;
 
@@ -17,15 +17,10 @@ namespace Application.Handlers.AuthHandler
                 throw new ArgumentException("Email o username ya están en uso.");
             }
 
-            var role = await _context.Roles
-                .FirstOrDefaultAsync(r => r.Id == request.RoleId, cancellationToken);
+            Role role = (await _context.Roles
+                .FirstOrDefaultAsync(r => r.Id == request.RoleId, cancellationToken) ?? new()) ?? throw new ArgumentException("The rol doesn´t exists.");
 
-            if (role == null)
-            {
-                throw new ArgumentException("El rol especificado no existe.");
-            }
-
-            var newUser = new LoginCredential
+            LoginCredential newUser = new()
             {
                 Username = request.Username,
                 Email = request.Email,

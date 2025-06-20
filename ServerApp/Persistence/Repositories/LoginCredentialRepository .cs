@@ -15,7 +15,7 @@ namespace Persistence.Repositories
 
         public Task<LoginCredential?> GetByUsernameOrEmailAsync(string input)
         {
-            return ((DbSet<LoginCredential>)_context.LoginCredentials)
+            return _context.LoginCredentials
                 .Include(u => u.Role)
                 .FirstOrDefaultAsync(u => u.Username == input || u.Email == input);
         }

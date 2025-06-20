@@ -10,7 +10,7 @@ namespace Application.Handlers.CatalogHandler
     {
         public async Task<List<CatalogRequestTypeDto>> Handle(GetRequestTypesQuery request, CancellationToken cancellationToken)
         {
-            var result = await context.RequestTypes
+            List<CatalogRequestTypeDto> result = await context.RequestTypes
                 .Select(rt => new CatalogRequestTypeDto
                 {
                     Id = rt.Id,

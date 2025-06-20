@@ -7,29 +7,31 @@ using System.Text;
 
 namespace Infrastructure.Services
 {
-    public class JwtService : IJwtService
+    public class JwtService(IConfiguration configuration) : IJwtService
     {
-        private readonly IConfiguration _configuration;
-
-        public JwtService(IConfiguration configuration)
-        {
-            _configuration = configuration;
-        }
+        private readonly IConfiguration _configuration = configuration;
 
         public string GenerateToken(long userId, string username, string role)
         {
-            var claims = new[]
+            // Ensure the configuration value is not null
+            string? jwtKey = _configuration["Jwt:Key"];
+            if (string.IsNullOrEmpty(jwtKey))
             {
-            new Claim(JwtRegisteredClaimNames.Sub, userId.ToString()),
-            new Claim(ClaimTypes.Name, username),
-            new Claim(ClaimTypes.Role, role),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-        };
+                throw new InvalidOperationException("JWT key is not configured.");
+            }
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            Claim[] claims =
+            {
+                    new(JwtRegisteredClaimNames.Sub, userId.ToString()),
+                    new(ClaimTypes.Name, username),
+                    new(ClaimTypes.Role, role),
+                    new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                };
 
-            var token = new JwtSecurityToken(
+            SymmetricSecurityKey key = new(Encoding.UTF8.GetBytes(jwtKey));
+            SigningCredentials creds = new(key, SecurityAlgorithms.HmacSha256);
+
+            JwtSecurityToken token = new(
                 issuer: _configuration["Jwt:Issuer"],
                 audience: _configuration["Jwt:Audience"],
                 claims: claims,
