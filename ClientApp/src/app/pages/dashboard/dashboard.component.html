@@ -1,0 +1,66 @@
+<div class="container mt-4">
+    <h2 class="text-primary">Dashboard</h2>
+
+    <button class="btn btn-success mb-3" (click)="openModal()">New Application</button>
+
+    <button class="btn btn-danger mb-3 ms-2"
+            [disabled]="selectedIds.size === 0"
+            (click)="deleteSelected()">Delete Selected</button>
+
+    <button class="btn btn-outline-secondary float-end" (click)="logout()">Logout</button>
+
+    <div class="modal fade" id="newRequestModal" tabindex="-1" aria-labelledby="newRequestModalLabel" aria-hidden="true">   
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <form [formGroup]="requestForm" (ngSubmit)="createRequest()">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="newRequestModalLabel">New Application</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="type" class="form-label">Type</label>
+                        <select class="form-select" formControlName="typeId">
+                        <option *ngFor="let type of requestTypes" [value]="type.id">{{ type.name }}</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="message" class="form-label">Message</label>
+                        <textarea class="form-control" formControlName="message" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" [disabled]="requestForm.invalid">Submit</button>
+                </div>
+            </form>
+        </div>
+        </div>
+    </div>
+
+    <table class="table table-bordered table-hover">
+        <thead class="table-primary">
+            <tr>
+                <th>
+                    <input type="checkbox" [checked]="isAllSelected()" (change)="toggleAllSelection()" />
+                </th>
+                <th>ID</th>
+                <th>Date</th>
+                <th>Type</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let request of applicationRequests">
+                <td>
+                    <input type="checkbox"
+                    [checked]="selectedIds.has(request.id)"
+                    (change)="toggleSelection(request.id)" />
+                </td>
+                <td>{{ request.id }}</td>
+                <td>{{ request.date | date:'short' }}</td>
+                <td>{{ request.type }}</td>
+                <td><span class="badge bg-success">{{ request.status }}</span></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
