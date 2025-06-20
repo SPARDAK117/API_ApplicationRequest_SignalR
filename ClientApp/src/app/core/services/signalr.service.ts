@@ -1,12 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
-
-interface ApplicationRequest {
-  id: number;
-  date: string;
-  type: number;
-  status: string;
-}
+import { ApplicationRequest } from '../models/application-request.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +26,6 @@ export class SignalRService {
 
 onApplicationRequestsUpdated(callback: (data: ApplicationRequest[]) => void): void {
   this.hubConnection.on('ApplicationRequestsUpdated', (data: ApplicationRequest[]) => {
-    console.log('📡 Evento recibido vía SignalR:', data);
     callback(data);
   });
 }

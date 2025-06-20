@@ -2,12 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { RequestType } from '../models/request-type.model';
+import { environment } from '../../../environments/environment';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class CatalogService {
-  private readonly baseUrl = 'https://localhost:7269/api/Catalog';
+  private baseUrl = `${environment.ApplicationApiBaseUrl}/Catalog`;
 
   constructor(private http: HttpClient) {}
 
