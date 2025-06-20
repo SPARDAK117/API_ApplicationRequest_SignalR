@@ -49,7 +49,22 @@ cd ClientApp
 npm install
 ng serve
 
-Once running, navigate to: http://localhost:4200
+Once the server is running, open your browser and navigate to http://localhost:4200/. The application will automatically reload whenever you modify any of the source files.
+
+---
+
+## 📦 Building the Application
+
+### Build Angular Frontend
+
+ng build
+
+This will compile your project and store the build artifacts in the dist/ directory. By default, the production build optimizes your application for performance and speed.
+
+### Publish ASP.NET Backend
+
+cd ServerApp
+dotnet publish -c Release
 
 ---
 
@@ -59,6 +74,8 @@ Once running, navigate to: http://localhost:4200
 
 ng test
 
+Runs unit tests via Karma (https://karma-runner.github.io).
+
 ### Run Angular End-to-End Tests
 
 ng e2e
@@ -67,38 +84,34 @@ ng e2e
 
 ---
 
-## 📦 Building for Production
+## 🧱 Angular CLI Commands Reference
 
-To build the frontend:
+### Code Scaffolding
 
-ng build
+To generate a new component, run:
 
-The output will be in dist/, which can be served statically or integrated into the backend.
+ng generate component component-name
 
-To publish the backend:
-
-cd ServerApp
-dotnet publish -c Release
-
----
-
-## 📚 Useful Commands
-
-### Generate Angular Component
-
-ng generate component my-component
-
-To see all available schematics:
+For a complete list of available schematics (such as components, directives, or pipes), run:
 
 ng generate --help
 
 ---
 
+## 📚 Additional Resources
+
+- Angular CLI Documentation: https://angular.dev/tools/cli
+- ASP.NET Core Docs: https://learn.microsoft.com/aspnet/core/
+- PostgreSQL Docs: https://www.postgresql.org/docs/
+- SignalR Documentation: https://learn.microsoft.com/aspnet/core/signalr/introduction
+
+---
+
 ## 📝 Notes
 
-- SignalR is enabled in the backend for real-time updates.
-- This architecture is suitable for development or deployment as a unified monolith.
-- You can separate ClientApp and ServerApp into independent services if needed in the future.
+- SignalR is enabled in the backend for real-time request updates.
+- This structure works well for local development or deployment as a full monolithic app.
+- If needed, ClientApp and ServerApp can later be split into separate deployable services.
 
 ---
 
