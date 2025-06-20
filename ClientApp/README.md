@@ -1,59 +1,107 @@
-# ClientApp
+# Monolithic Application: Angular + ASP.NET Core (.NET 8)
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.0.3.
+This repository contains a fullstack monolithic application composed of:
 
-## Development server
+- **ClientApp**: Angular 17 (standalone application)
+- **ServerApp**: ASP.NET Core 8 Web API with PostgreSQL and SignalR
 
-To start a local development server, run:
+---
 
-```bash
+## 🔧 Project Structure
+
+myApp/
+├── ClientApp/     # Frontend Angular application
+└── ServerApp/     # Backend .NET Web API application
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+Make sure you have the following installed:
+
+- .NET 8 SDK: https://dotnet.microsoft.com/download
+- Node.js & npm: https://nodejs.org/
+- Angular CLI v20+: https://angular.dev/tools/cli
+- PostgreSQL: https://www.postgresql.org/
+- Visual Studio or VS Code: https://code.visualstudio.com/
+
+---
+
+## 🖥️ Running the Application Locally
+
+### 1. Run the Backend (ServerApp)
+
+cd ServerApp
+dotnet ef database update  # optional, if using EF migrations
+dotnet run
+
+By default, the API will be available at: https://localhost:5001 or http://localhost:5000
+
+> Make sure your appsettings.Development.json has the correct PostgreSQL connection string.
+
+---
+
+### 2. Run the Frontend (ClientApp)
+
+cd ClientApp
+npm install
 ng serve
-```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Once running, navigate to: http://localhost:4200
 
-## Code scaffolding
+---
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## 🧪 Testing
 
-```bash
-ng generate component component-name
-```
+### Run Angular Unit Tests
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
 ng test
-```
 
-## Running end-to-end tests
+### Run Angular End-to-End Tests
 
-For end-to-end (e2e) testing, run:
-
-```bash
 ng e2e
-```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+> Angular CLI does not include an e2e framework by default. You can integrate Cypress, Playwright, or Protractor.
 
-## Additional Resources
+---
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## 📦 Building for Production
+
+To build the frontend:
+
+ng build
+
+The output will be in dist/, which can be served statically or integrated into the backend.
+
+To publish the backend:
+
+cd ServerApp
+dotnet publish -c Release
+
+---
+
+## 📚 Useful Commands
+
+### Generate Angular Component
+
+ng generate component my-component
+
+To see all available schematics:
+
+ng generate --help
+
+---
+
+## 📝 Notes
+
+- SignalR is enabled in the backend for real-time updates.
+- This architecture is suitable for development or deployment as a unified monolith.
+- You can separate ClientApp and ServerApp into independent services if needed in the future.
+
+---
+
+## 📄 License
+
+MIT License
