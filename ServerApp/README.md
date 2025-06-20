@@ -1,54 +1,108 @@
-# API_ApplicationRequest_SignalR
+API_ApplicationRequest_SignalR
 Application Request Management System with .NET Core, PostgreSQL, and Angular
 This project is a full-stack web application built with .NET 8, Angular, and PostgreSQL, designed to manage requests (requests, offers, complaints) in real time. Users can authenticate, submit new requests, and view a list of all submitted requests, which are automatically updated to "completed" by a background process.
 
 🔑 Key Features:
-🔐 JWT Authentication (in progress)
 
-📝 Request creation and retrieval using MediatR and CQRS pattern
+JWT Authentication (in progress)
 
-📄 Relational catalog for request types
+Request creation and retrieval using MediatR and CQRS pattern
 
-⏱️ Background service that automatically updates request status to "completed" after 1 minute
+Relational catalog for request types
 
-📡 Real-time updates using SignalR
+Background service that updates request status to "completed" after 1 minute
 
-🧱 Clean architecture based on DDD and layered separation:
+Real-time updates using SignalR
 
-Domain: Entities and contracts
+Clean architecture based on DDD:
 
-Application: Commands, queries, and handlers
+/Domain → Entities and contracts
 
-Infrastructure: Services like SignalR and HostedService
+/Application → Commands, queries, handlers
 
-Persistence: EF Core and data access
+/Infrastructure → Services like SignalR and background jobs
 
-API: Presentation layer with controllers
+/Persistence → EF Core & PostgreSQL access
+
+/API → Web API controllers
+
+/ClientApp → Angular frontend (standalone)
 
 🧪 Tech Stack:
-.NET 8 + Web API
 
-Entity Framework Core + PostgreSQL
+.NET 8 (ASP.NET Core Web API)
+
+Angular 17 (standalone components)
+
+PostgreSQL + Entity Framework Core
 
 MediatR
 
 SignalR
 
-Angular (coming soon)
+JWT Authentication (coming soon)
 
-JWT (in development)
+⚙️ Prerequisites:
+
+.NET 8 SDK
+
+Node.js + NPM
+
+PostgreSQL 14+
+
+Angular CLI
+
+(Optional) DBeaver or pgAdmin for managing PostgreSQL
+
+🛠️ Initialize PostgreSQL Database:
+Run the following command to create all tables and populate the catalog:
+
+psql -U postgres -d ApplicationRequestsDb -f ./Database/init_db.sql
+
+Replace postgres with your PostgreSQL user if needed.
+Alternatively, import the script via DBeaver or pgAdmin.
+
+🧭 How to Run the App
+
+🔧 Backend (.NET)
+
+Go to the root folder:
+cd myApp
+
+Restore and run the API:
+dotnet restore
+dotnet run --project ServerApp
+
+The API should run on https://localhost:5001 or the configured port.
+
+🌐 Frontend (Angular)
+
+Navigate to the Angular app:
+cd ClientApp
+
+Install and start:
+npm install
+ng serve
+
+Visit http://localhost:4200 to view the app.
+
+🔁 Real-Time Communication:
+The app uses SignalR to push updates to connected clients when a request is automatically updated from "submitted" to "completed". A background process runs every 10 seconds to check and update eligible requests.
 
 📘 Changelog:
-Implemented request registration (ApplicationRequest) using MediatR and EF Core
 
-Added RequestType catalog with foreign key relationship
+Request registration using MediatR and EF Core
 
-Configured a background HostedService that updates request status to completed after 1 minute
+RequestType catalog with FK relationship
 
-Integrated SignalR for notifying clients in real-time upon request updates
+Background HostedService for automatic status updates
 
-Added DTOs and mappings for request queries
+Real-time SignalR integration
 
-Structured the project by layers: Domain, Application, Infrastructure, Persistence, and API
+DTOs and mappings for clean data contracts
 
-Prepared backend for JWT authentication integration
+Layered architecture using DDD principles
+
+JWT authentication groundwork in place
+
+✅ Clone the repo, follow the steps, and you're ready to test. Feedback and contributions are welcome.
