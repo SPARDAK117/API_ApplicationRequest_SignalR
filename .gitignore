@@ -52,5 +52,12 @@ yarn-error.log*
 ~$*
 *.orig
 
+# .NET secrets y config sensibles
+appsettings.Development.json
+appsettings.Local.json
+secrets.json
+*.user
+*.suo
+
 # ---- Backups ----
 Backup/
