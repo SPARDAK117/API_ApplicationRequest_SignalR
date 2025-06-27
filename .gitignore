@@ -54,3 +54,7 @@ yarn-error.log*
 
 # ---- Backups ----
 Backup/
+# Configuración sensible
+**/appsettings*.json
+secrets.json
+.env
